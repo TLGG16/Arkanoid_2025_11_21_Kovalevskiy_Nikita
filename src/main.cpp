@@ -14,6 +14,7 @@
 
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
+#include "arkanoid_impl.h"
 
 static void glfw_error_callback(int error, const char* description)
 {
@@ -117,9 +118,11 @@ int main(int, char**)
 
             ImGui::Spacing();
             ImGui::Text("Cheats");
-            ImGui::Spacing();
 
-            ImGui::Checkbox("God mode", &arkanoid_settings.godemode);
+            ImGui::Spacing();
+            ImGui::Checkbox("God mode (Have to restart)", &arkanoid_settings.godemode);
+            ImGui::Spacing();
+            if(ImGui::Button("Add 1 ball")) arkanoid->addBall();
             
             ImGui::End();
         }

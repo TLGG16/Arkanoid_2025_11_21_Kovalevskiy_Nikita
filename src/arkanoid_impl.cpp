@@ -12,6 +12,20 @@ Arkanoid* create_arkanoid()
 
 int* scoreptr; bool godemode;
 
+void ArkanoidImpl::addBall() {
+    
+    Ball ball;
+    ball.ball_position = carriage.pos_min;
+    ball.ball_position.x = (carriage.pos_max.x - carriage.pos_min.x) / 2 + carriage.pos_min.x;
+    ball.ball_position.y *= 0.90f;
+    ball.ball_velocity = Vect(ball_initial_speed);
+    ball.ball_velocity.x = 0;
+    ball.ball_radius = balls[0].ball_radius;
+    balls.push_back(ball);
+    
+
+    
+}
 
 
 bool ArkanoidImpl::ResolveCollision(ArkanoidDebugData& debug_data, Brick& brick, Ball &ball) {
@@ -30,17 +44,11 @@ bool ArkanoidImpl::ResolveCollision(ArkanoidDebugData& debug_data, Brick& brick,
 
         return false;
     }
-    if (distanceSquared < 0.0001f) {
-        brick.destroyed = true;
-        *scoreptr += 10;
-        ball.ball_velocity.y *= -1;
-        ball.ball_velocity.x *= -1;
-        return false;
-    }
+    
     //расчитываем правильно коллизию
     float distance = std::sqrt(distanceSquared);
-    float normalX = deltaX / distance;
-    float normalY = deltaY / distance;
+    float normalX = deltaX / (distance + 0.0000001f);
+    float normalY = deltaY / (distance + 0.0000001f);
     float penetrationDepth = ball.ball_radius - distance;
 
     ball.ball_position.x += normalX * penetrationDepth;
@@ -78,16 +86,13 @@ void ArkanoidImpl::CheckCollisionBallCarriage(ArkanoidDebugData& debug_data, Bal
         return;
     }
 
-    if (distanceSquared < 0.0001f) {
-        return;
-    }
 
     float distance = std::sqrt(distanceSquared);
     float penetrationDepth = ball.ball_radius - distance;
 
     //  орректируем позицию шарика, чтобы он не проникал внутрь
-    ball.ball_position.x += deltaX / distance * penetrationDepth;
-    ball.ball_position.y += deltaY / distance * penetrationDepth;
+    ball.ball_position.x += deltaX / (distance+ 0.0000001f)*penetrationDepth;
+    ball.ball_position.y += deltaY / (distance+ 0.0000001f)*penetrationDepth;
 
     // 1. Ќаходим центр
     float carriageCenterX = (carriage.pos_min.x + carriage.pos_max.x) / 2.0f;
@@ -142,14 +147,15 @@ void ArkanoidImpl::reset(const ArkanoidSettings &settings)
     carriage.pos_min.y = world_size.y * 0.9f;
 
     carriage.pos_max.x = carriage.pos_min.x + carriage_width;
-    carriage.pos_max.y = carriage.pos_min.y + 20;
+    carriage.pos_max.y = carriage.pos_min.y + 40;
 
     balls.clear();
     ball_initial_speed = settings.ball_speed;
     Ball ball;
     ball.ball_position = carriage.pos_min;
     ball.ball_position.x = (carriage.pos_max.x - carriage.pos_min.x) / 2 + carriage.pos_min.x;
-    ball.ball_position.y *= 0.95f;
+
+    ball.ball_position.y *= 0.90f;
     ball.ball_velocity = Vect(ball_initial_speed);
     ball.ball_velocity.x = 0;
     ball.ball_radius = settings.ball_radius;
@@ -215,7 +221,7 @@ void ArkanoidImpl::update(ImGuiIO& io, ArkanoidDebugData& debug_data, float elap
         Ball ball;
         ball.ball_position = carriage.pos_min;
         ball.ball_position.x = (carriage.pos_max.x - carriage.pos_min.x) / 2 + carriage.pos_min.x;
-        ball.ball_position.y *= 0.95f;
+        ball.ball_position.y *= 0.90f;
         ball.ball_velocity = Vect(ball_initial_speed);
         ball.ball_velocity.x = 0;
         ball.ball_radius = balls[0].ball_radius;
@@ -283,12 +289,15 @@ void ArkanoidImpl::draw(ImGuiIO& io, ImDrawList &draw_list)
 
     
     Carriage screen_carriage = carriage;
+    
 
     screen_carriage.pos_min.x *= world_to_screen.x;
     screen_carriage.pos_min.y *= world_to_screen.y;
 
     screen_carriage.pos_max.x *= world_to_screen.x;
     screen_carriage.pos_max.y *= world_to_screen.y;
+
+    draw_list.AddRectFilled(screen_carriage.pos_min, screen_carriage.pos_max, ImColor(255, 255, 255));
 
     for (auto& ball : balls) {
      
@@ -298,7 +307,7 @@ void ArkanoidImpl::draw(ImGuiIO& io, ImDrawList &draw_list)
         draw_list.AddCircleFilled(screen_pos, screen_radius, ImColor(255, 0, 0));
 
     }
-    draw_list.AddRectFilled(screen_carriage.pos_min, screen_carriage.pos_max, ImColor(255, 255, 255));
+
 
     for (int i = 0; i < brick_matrix.size(); i++) {
 

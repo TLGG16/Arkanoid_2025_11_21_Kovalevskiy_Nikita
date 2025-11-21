@@ -2,6 +2,7 @@
 
 #include "base.h"
 #include <vector>
+#include <functional>
 
 struct ArkanoidSettings
 {
@@ -18,13 +19,13 @@ struct ArkanoidSettings
     static constexpr float ball_radius_min = 10.0f;
     static constexpr float ball_radius_max = 50.0f;
     static constexpr float ball_speed_min = 200.0f;
-    static constexpr float ball_speed_max = 1000.f; 
+    static constexpr float ball_speed_max = 2000.f; 
 
     static constexpr float carriage_width_min = 50.0f;
     static constexpr float carriage_speed_min = 350.0f;
     static constexpr float carriage_speed_max = 1000.0f;
 
-    Vect world_size = Vect(1200.0f, 900.f);
+    Vect world_size = Vect(1200.0f, 1500.f);
 
     int bricks_columns_count = 30;
     int bricks_rows_count = 10;
@@ -61,6 +62,7 @@ public:
     virtual void reset(const ArkanoidSettings& settings) = 0;
     virtual void draw(ImGuiIO& io, ImDrawList& draw_list) = 0;
     virtual void update(ImGuiIO& io, ArkanoidDebugData& debug_data, float elapsed) = 0;
+    virtual void addBall() = 0;
 };
 
 extern Arkanoid* create_arkanoid();

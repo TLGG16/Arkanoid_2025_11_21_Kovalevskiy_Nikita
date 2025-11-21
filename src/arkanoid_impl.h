@@ -35,7 +35,7 @@ public:
     void reset(const ArkanoidSettings& settings) override;
     void update(ImGuiIO& io, ArkanoidDebugData& debug_data, float elapsed) override;
     void draw(ImGuiIO& io, ImDrawList& draw_list) override;
-
+    void addBall() override;
 private:
     
 
@@ -51,7 +51,6 @@ private:
 
     void CheckCollisionBallCarriage(ArkanoidDebugData& debug_data, Ball &ball);
     bool ResolveCollision(ArkanoidDebugData& debug_data, Brick& brick, Ball &ball);
-
 
 
 
