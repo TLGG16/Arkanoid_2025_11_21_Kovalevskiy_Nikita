@@ -41,9 +41,7 @@ private:
 
     Vect world_size = Vect(0.0f);
     Vect world_to_screen = Vect(0.0f);
-    /*Vect ball_position = Vect(0.0f);
-    Vect ball_velocity = Vect(0.0f);
-    float ball_radius = 0.0f;*/
+
     float ball_initial_speed = 0.0f;
     float carriage_width = 0.0f;
     Carriage carriage;
@@ -51,17 +49,12 @@ private:
     std::vector<std::vector<Brick>> brick_matrix;
     
 
-    void CheckCollisionBallCarriage(ArkanoidDebugData& debug_data);
     void CheckCollisionBallCarriage(ArkanoidDebugData& debug_data, Ball &ball);
-    bool ResolveCollision(ArkanoidDebugData& debug_data, Brick& brick);
     bool ResolveCollision(ArkanoidDebugData& debug_data, Brick& brick, Ball &ball);
 
 
 
 
-    void demo_update(ImGuiIO& io, ArkanoidDebugData& debug_data, float elapsed);
-    void demo_draw(ImGuiIO& io, ImDrawList& draw_list);
-    void demo_add_debug_hit(ArkanoidDebugData& debug_data, const Vect& pos, const Vect& normal);
 
     void add_debug_hit(ArkanoidDebugData& debug_data, const Vect& pos, const Vect& normal);
     Vect demo_world_size = Vect(0.0f);

@@ -26,8 +26,8 @@ struct ArkanoidSettings
 
     Vect world_size = Vect(1200.0f, 900.f);
 
-    int bricks_columns_count = 15;
-    int bricks_rows_count = 7;
+    int bricks_columns_count = 30;
+    int bricks_rows_count = 10;
 
     float bricks_columns_padding = 5.0f;
     float bricks_rows_padding = 5.0f;

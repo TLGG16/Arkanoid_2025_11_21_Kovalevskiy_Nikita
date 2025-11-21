@@ -12,54 +12,7 @@ Arkanoid* create_arkanoid()
 
 int* scoreptr; bool godemode;
 
-/*
-bool ArkanoidImpl::ResolveCollision(ArkanoidDebugData& debug_data, Brick& brick) {
 
-    if (brick.destroyed) return false;
-    //высчитываем ближайшие точки
-    float closestX = std::clamp(ball_position.x, brick.pos_min.x, brick.pos_max.x);
-    float closestY = std::clamp(ball_position.y, brick.pos_min.y, brick.pos_max.y);
-    //дельты расто€ний 
-    float deltaX = ball_position.x - closestX;
-    float deltaY = ball_position.y - closestY;
-    float distanceSquared = (deltaX * deltaX) + (deltaY * deltaY);
-    float radiusSquared = ball_radius * ball_radius;
-    //false значит коллизии нет
-    if (distanceSquared > radiusSquared) {
-
-        return false;
-    }
-    if (distanceSquared < 0.0001f) {
-        brick.destroyed = true;
-        *scoreptr += 10;
-        ball_velocity.y *= -1;
-        ball_velocity.x *= -1;
-        return false;
-    }
-    //расчитываем правильно коллизию
-    float distance = std::sqrt(distanceSquared);
-    float normalX = deltaX / distance;
-    float normalY = deltaY / distance;
-    float penetrationDepth = ball_radius - distance;
-
-    ball_position.x += normalX * penetrationDepth;
-    ball_position.y += normalY * penetrationDepth;
-    float dotProduct = (ball_velocity.x * normalX) + (ball_velocity.y * normalY);
-
-    brick.destroyed = true;
-    *scoreptr += 10;
-
-    ball_velocity.x = ball_velocity.x - 2.0f * dotProduct * normalX;
-    ball_velocity.y = ball_velocity.y - 2.0f * dotProduct * normalY;
-    if (ball_velocity.x > ball_initial_speed) ball_velocity.x = ball_initial_speed;
-    if (ball_velocity.y > ball_initial_speed) ball_velocity.y = ball_initial_speed;
-    add_debug_hit(debug_data, Vect(ball_position.x, ball_position.y),
-        Vect(ball_velocity.x / (std::abs(ball_velocity.y) + std::abs(ball_velocity.x)), ball_velocity.y / (std::abs(ball_velocity.y) + std::abs(ball_velocity.x))));
-
-    return true;
-
-}
-*/
 
 bool ArkanoidImpl::ResolveCollision(ArkanoidDebugData& debug_data, Brick& brick, Ball &ball) {
 
@@ -109,69 +62,6 @@ bool ArkanoidImpl::ResolveCollision(ArkanoidDebugData& debug_data, Brick& brick,
 
 }
 
-/*
-void ArkanoidImpl::CheckCollisionBallCarriage(ArkanoidDebugData& debug_data) {
-
-
-    //высчитываем ближайшие точки
-    float closestX = std::clamp(ball_position.x, carriage.pos_min.x, carriage.pos_max.x);
-    float closestY = std::clamp(ball_position.y, carriage.pos_min.y, carriage.pos_max.y);
-    //дельты расто€ний 
-    float deltaX = ball_position.x - closestX;
-    float deltaY = ball_position.y - closestY;
-    float distanceSquared = (deltaX * deltaX) + (deltaY * deltaY);
-    float radiusSquared = ball_radius * ball_radius;
-    if (distanceSquared > radiusSquared) {
-        return;
-    }
-
-    if (distanceSquared < 0.0001f) {
-        return;
-    }
-
-    float distance = std::sqrt(distanceSquared);
-    float penetrationDepth = ball_radius - distance;
-
-    //  орректируем позицию шарика, чтобы он не проникал внутрь
-    ball_position.x += deltaX / distance * penetrationDepth;
-    ball_position.y += deltaY / distance * penetrationDepth;
-
-    // 1. Ќаходим центр
-    float carriageCenterX = (carriage.pos_min.x + carriage.pos_max.x) / 2.0f;
-    float carriageCenterY = (carriage.pos_min.y + carriage.pos_max.y) / 2.0f;
-
-    // 2. ¬ычисл€ем вектор от центра к центру шарика
-    float directionX = ball_position.x - carriageCenterX;
-    float directionY = ball_position.y - carriageCenterY;
-
-    // 3. Ќормализуем этот вектор
-    float directionLength = std::sqrt(directionX * directionX + directionY * directionY);
-    if (directionLength > 0.0001f) {
-        directionX /= directionLength;
-        directionY /= directionLength;
-    }
-    else {
-        directionX = 0.0f;
-        directionY = -1.0f;
-    }
-    // ”станавливаем новую скорость шарика на основе этого направлени€ и исходной скорости
-    ball_velocity.x = directionX * ball_initial_speed * 0.4f;
-    ball_velocity.y = -std::abs(ball_initial_speed);
-
-
-    add_debug_hit(debug_data, Vect(ball_position.x, ball_position.y),
-        Vect(ball_velocity.x / (std::abs(ball_velocity.y) + std::abs(ball_velocity.x)), ball_velocity.y / (std::abs(ball_velocity.y) + std::abs(ball_velocity.x))));
-
-
-
-
-    return;
-
-
-
-}
-
-*/
 
 void ArkanoidImpl::CheckCollisionBallCarriage(ArkanoidDebugData& debug_data, Ball &ball) {
 
@@ -238,10 +128,7 @@ void ArkanoidImpl::CheckCollisionBallCarriage(ArkanoidDebugData& debug_data, Bal
 
 void ArkanoidImpl::reset(const ArkanoidSettings &settings)
 {
-    // TODO:
-    // Implement your game world, bricks and
-    // carriage initialization
-    // ...
+    
     settings.score = 0;
     godemode = settings.godemode;
     scoreptr = &settings.score;
@@ -269,10 +156,7 @@ void ArkanoidImpl::reset(const ArkanoidSettings &settings)
     balls.push_back(ball);
    
     
-    /*ball_position = world_size * 0.5f;
-    ball_radius = settings.ball_radius;
-    ball_velocity = Vect(-ball_initial_speed);*/
-
+ 
     
     
  
@@ -299,14 +183,7 @@ void ArkanoidImpl::reset(const ArkanoidSettings &settings)
 
     
 
-    // TODO:
-    // remove demo code
-    /*demo_world_size.x = settings.world_size[0];
-    demo_world_size.y = settings.world_size[1];
-    demo_ball_position = demo_world_size * 0.1f;
-    demo_ball_initial_speed = settings.ball_speed;
-    demo_ball_radius = settings.ball_radius;
-    demo_ball_velocity = Vect(demo_ball_initial_speed);*/
+    
 }
 
 void ArkanoidImpl::update(ImGuiIO& io, ArkanoidDebugData& debug_data, float elapsed)
@@ -316,7 +193,8 @@ void ArkanoidImpl::update(ImGuiIO& io, ArkanoidDebugData& debug_data, float elap
     // and game logic.
     // ...
     world_to_screen = Vect(io.DisplaySize.x / world_size.x, io.DisplaySize.y / world_size.y);
-
+    
+    
     // process user input
     if (io.KeysDown[GLFW_KEY_A]) {
         //ball_velocity.x -= 2.0f;
@@ -395,53 +273,6 @@ void ArkanoidImpl::update(ImGuiIO& io, ArkanoidDebugData& debug_data, float elap
 
 
 
-    /*
-    ball_position += ball_velocity * elapsed;
-    
-    
-    if (ball_position.x < ball_radius)
-    {
-        ball_position.x += (ball_radius - ball_position.x) * 2.0f;
-        ball_velocity.x *= -1.0f;
-
-        add_debug_hit(debug_data, Vect(0, ball_position.y), Vect(1, 0));
-    }
-    
-    else if (ball_position.x > (world_size.x - ball_radius))
-    {
-        ball_position.x -= (ball_position.x - (world_size.x - ball_radius)) * 2.0f;
-        ball_velocity.x *= -1.0f;
-
-        add_debug_hit(debug_data, Vect(world_size.x, ball_position.y), Vect(-1, 0));
-    }
-
-    if (ball_position.y < ball_radius)
-    {
-        ball_position.y += (ball_radius - ball_position.y) * 2.0f;
-        ball_velocity.y *= -1.0f;
-
-        add_debug_hit(debug_data, Vect(ball_position.x, 0), Vect(0, 1));
-    }
-    else if (ball_position.y > (world_size.y - ball_radius))
-    {
-        ball_position.y -= (ball_position.y - (world_size.y - ball_radius)) * 2.0f;
-        ball_velocity.y *= -1.0f;
-
-        add_debug_hit(debug_data, Vect(ball_position.x, world_size.y), Vect(0, -1));
-    }
-    CheckCollisionBallCarriage(debug_data);
-
-
-    for (int i = 0; i < brick_matrix.size(); i++) {
-     
-        for (int j = 0; j < brick_matrix[i].size(); j++) {
-            if (ResolveCollision(debug_data, brick_matrix[i][j]));
-        }
-    }
-    */
-    // TODO:
-    // remove demo code
-    //demo_update(io, debug_data, elapsed);
 }
 
 void ArkanoidImpl::draw(ImGuiIO& io, ImDrawList &draw_list)
@@ -449,8 +280,7 @@ void ArkanoidImpl::draw(ImGuiIO& io, ImDrawList &draw_list)
     // TODO:
     // Implement you Arkanoid drawing
     // ...
-    //Vect screen_pos = ball_position * world_to_screen;
-    //float screen_radius = ball_radius * world_to_screen.x;
+
     
     Carriage screen_carriage = carriage;
 
@@ -468,7 +298,6 @@ void ArkanoidImpl::draw(ImGuiIO& io, ImDrawList &draw_list)
         draw_list.AddCircleFilled(screen_pos, screen_radius, ImColor(255, 0, 0));
 
     }
-    //draw_list.AddCircleFilled(screen_pos, screen_radius, ImColor(255, 0, 0));
     draw_list.AddRectFilled(screen_carriage.pos_min, screen_carriage.pos_max, ImColor(255, 255, 255));
 
     for (int i = 0; i < brick_matrix.size(); i++) {
@@ -481,13 +310,9 @@ void ArkanoidImpl::draw(ImGuiIO& io, ImDrawList &draw_list)
             screen_brick.pos_max.x = brick_matrix[i][j].pos_max.x * world_to_screen.x;
             screen_brick.pos_max.y = brick_matrix[i][j].pos_max.y * world_to_screen.y;
             draw_list.AddRectFilled(screen_brick.pos_min, screen_brick.pos_max, ImColor(100, 255, 100));
-            //draw_list.AddRect(screen_brick.pos_min, screen_brick.pos_max, ImColor(0,0,0), 0.0f, ImDrawFlags_None, 2.0f);
         }
 
     }
-    // TODO:
-    // remove demo code
-    //demo_draw(io, draw_list);
 }
 
 void ArkanoidImpl::add_debug_hit(ArkanoidDebugData& debug_data, const Vect& world_pos, const Vect& normal)
@@ -497,78 +322,6 @@ void ArkanoidImpl::add_debug_hit(ArkanoidDebugData& debug_data, const Vect& worl
     hit.normal = normal;
     debug_data.hits.push_back(std::move(hit));
 }
-
-void ArkanoidImpl::demo_update(ImGuiIO& io, ArkanoidDebugData& debug_data, float elapsed)
-{
-    demo_world_to_screen = Vect(io.DisplaySize.x / demo_world_size.x, io.DisplaySize.y / demo_world_size.y);
-
-    // process user input
-    if (io.KeysDown[GLFW_KEY_A])
-        demo_ball_velocity.x -= 1.0f;
-
-    if (io.KeysDown[GLFW_KEY_D])
-        demo_ball_velocity.x += 1.0f;
-
-    if (io.KeysDown[GLFW_KEY_W])
-        demo_ball_velocity.y -= 1.0f;
-
-    if (io.KeysDown[GLFW_KEY_S])
-        demo_ball_velocity.y += 1.0f;
-
-    if (io.KeysDown[GLFW_KEY_ESCAPE])
-        demo_ball_velocity = Vect(demo_ball_initial_speed);
-
-    // update ball position according
-    // its velocity and elapsed time
-    demo_ball_position += demo_ball_velocity * elapsed;
-
-    if(demo_ball_position.x < demo_ball_radius)
-    {
-        demo_ball_position.x += (demo_ball_radius - demo_ball_position.x) * 2.0f;
-        demo_ball_velocity.x *= -1.0f;
-        
-        demo_add_debug_hit(debug_data, Vect(0, demo_ball_position.y), Vect(1, 0));
-    }
-    else if(demo_ball_position.x > (demo_world_size.x - demo_ball_radius))
-    {
-        demo_ball_position.x -= (demo_ball_position.x - (demo_world_size.x - demo_ball_radius)) * 2.0f;
-        demo_ball_velocity.x *= -1.0f;
-        
-        demo_add_debug_hit(debug_data, Vect(demo_world_size.x, demo_ball_position.y), Vect(-1, 0));
-    }
-
-    if(demo_ball_position.y < demo_ball_radius)
-    {
-        demo_ball_position.y += (demo_ball_radius - demo_ball_position.y) * 2.0f;
-        demo_ball_velocity.y *= -1.0f;
-
-        demo_add_debug_hit(debug_data, Vect(demo_ball_position.x, 0), Vect(0, 1));
-    }
-    else if(demo_ball_position.y > (demo_world_size.y - demo_ball_radius))
-    {
-        demo_ball_position.y -= (demo_ball_position.y - (demo_world_size.y - demo_ball_radius)) * 2.0f;
-        demo_ball_velocity.y *= -1.0f;
-
-        demo_add_debug_hit(debug_data, Vect(demo_ball_position.x, demo_world_size.y), Vect(0, -1));
-    }
-}
-
-void ArkanoidImpl::demo_draw(ImGuiIO& io, ImDrawList& draw_list)
-{
-    Vect screen_pos = demo_ball_position * demo_world_to_screen;
-    float screen_radius = demo_ball_radius * demo_world_to_screen.x;
-    draw_list.AddCircleFilled(screen_pos, screen_radius, ImColor(100, 255, 100));
-}
-
-
-void ArkanoidImpl::demo_add_debug_hit(ArkanoidDebugData& debug_data, const Vect& world_pos, const Vect& normal)
-{
-    ArkanoidDebugData::Hit hit;
-    hit.screen_pos = world_pos * demo_world_to_screen;
-    hit.normal = normal;
-    debug_data.hits.push_back(std::move(hit));
-}
-
 
 
 
