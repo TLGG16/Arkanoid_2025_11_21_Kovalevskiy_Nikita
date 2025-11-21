@@ -199,8 +199,9 @@ void ArkanoidImpl::update(ImGuiIO& io, ArkanoidDebugData& debug_data, float elap
     // and game logic.
     // ...
     world_to_screen = Vect(io.DisplaySize.x / world_size.x, io.DisplaySize.y / world_size.y);
+
     
-    
+
     // process user input
     if (io.KeysDown[GLFW_KEY_A]) {
         //ball_velocity.x -= 2.0f;
